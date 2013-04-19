@@ -11,7 +11,6 @@
     , $newProject = $('#newProject')
     , $editProject = $('#editProject')
     , $fullProject = $('#fullProject')
-    , $logIn = $('#logIn')
     , $modals = $('.modal')
     , $searchInput = $('#searchInput')
     , $formSearch = $('.formSearch')
@@ -58,7 +57,7 @@
   };
 
   var logIn = function(ctx, next) {
-    $logIn.modal('show');
+    window.Auth0.signIn({onestep: true});
   };
 
   var cleanSearch = function(ctx, next){

@@ -7,7 +7,7 @@ module.exports = function(app) {
 
   var User = new Schema({
       "provider": { type: String, required: true }
-    , "provider_id": { type: Number, required: true }
+    , "provider_id": { type: String, required: true }
     , "username": { type: String, required: true }
     , "name": { type: String, required: true }
     , "email": { type: String, validate: /.+@.+\..+/ }
