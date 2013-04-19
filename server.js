@@ -7,14 +7,22 @@ var express = require('express')
   , passport = require('passport')
   , mongoose = require('mongoose')
   , MongoStore = require('connect-mongo')(express)
-  , config = require('./config.json')
-  , http = require('http');
+  , http = require('http')
+  , nconf = require('nconf');
+
+nconf.env()
+     .file({ file: __dirname + '/config.json', logicalSeparator: '||' })
+     .defaults({
+        PORT:           4000,
+        SESSION_SECRET: 'a1b2c3d4567',
+        AUTHENTICATION: 'FORM'
+     });
 
 /*
  * DB
  */
 
-mongoose.connect(config.db.url || ('mongodb://' + config.db.host + '/'+ config.db.name));
+mongoose.connect(nconf.get('db').url || ('mongodb://' + nconf.get('db').host + '/'+ nconf.get('db').name));
 
 var app = exports.app = express();
 
@@ -23,8 +31,7 @@ var app = exports.app = express();
  */
 
 app.configure(function(){
-  app.set('config', config);
-  app.set('port', process.env.PORT || app.get('config').port);
+  app.set('port', process.env.PORT || nconf.get('port'));
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -32,12 +39,12 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.limit('3.5mb'));
   app.use(express.methodOverride());
-  app.use(express.cookieParser(app.get('config').session));
+  app.use(express.cookieParser(nconf.get('session')));
   app.use(express.session({
-      secret: app.get('config').session
-    , store: new MongoStore({db: app.get('config').db.name, url:
-app.get('config').db.url}) 
-    , cookie: { maxAge: 365 * 24 * 60 * 60 * 1000, path: '/', domain: '.' + app.get('config').host }
+      secret: nconf.get('session')
+    , store: new MongoStore({db: nconf.get('db').name, url:
+nconf.get('db').url}) 
+    , cookie: { maxAge: 365 * 24 * 60 * 60 * 1000, path: '/', domain: '.' + nconf.get('host') }
   }));
   app.use(passport.initialize());
   app.use(passport.session());

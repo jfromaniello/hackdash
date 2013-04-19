@@ -6,14 +6,15 @@ var mongoose = require('mongoose')
 module.exports = function(app) {
 
   var User = new Schema({
-      "provider": { type: String, required: true }
-    , "provider_id": { type: String, required: true }
+    "provider_id": { type: String, required: true }
     , "username": { type: String, required: true }
     , "name": { type: String, required: true }
     , "email": { type: String, validate: /.+@.+\..+/ }
     , "picture": String
     , "bio": String
     , "is_admin": { type: Boolean, default: false }
+    , "is_social": { type: Boolean, default: false }
+    , "company": { type: String }
     , "created_at": {type: Date, default: Date.now }
   });
 
@@ -30,6 +31,8 @@ module.exports = function(app) {
     , "link": String 
     , "tags": [String]
     , "created_at": { type: Date, default: Date.now }
+    , "company": { type: String }
+    , "created_at": {type: Date, default: Date.now }
   });
 
   mongoose.model('Project', Project);

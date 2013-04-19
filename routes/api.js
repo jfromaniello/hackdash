@@ -126,7 +126,15 @@ var isProjectLeader = function(req, res, next){
  */
 
 var loadProjects = function(req, res, next) {
-  Project.find({})
+  var q = {};
+
+  if (!req.user || req.user.is_social) {
+    q.is_social = true;
+  } else {
+    q.company = req.user.company;
+  }
+
+  Project.find(q)
   .populate('contributors')
   .populate('followers')
   .populate('leader')
@@ -213,6 +221,8 @@ var saveProject = function(req, res, next) {
     , followers: [req.user._id]
     , contributors: [req.user._id]
     , cover: req.body.cover
+    , is_social: !req.user || req.user.is_social
+    , company:    req.user.company
   });
 
   project.save(function(err, project){

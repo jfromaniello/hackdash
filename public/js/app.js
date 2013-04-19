@@ -60,6 +60,10 @@
     window.Auth0.signIn({onestep: true});
   };
 
+  var provIn = function(ctx, next) {
+    window.Auth0.showProvisioning('/provisioning');
+  };
+
   var cleanSearch = function(ctx, next){
     $searchInput.val('');
     next();
@@ -188,6 +192,7 @@
 
   page('/', loadProjects, cleanSearch, isotopeDashboard);
   page('/login', logIn);
+  page('/prov', provIn);
   page('/search', loadSearchProjects, isotopeDashboard);
   page('/projects/create', createProject);
   page('/projects/edit/:project_id', editProject);

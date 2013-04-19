@@ -13,7 +13,7 @@ module.exports = function(app) {
 
   var dashboardStack = [
     loadUser, 
-    loadProviders,
+    loadGranted,
     setViewVar('statuses', app.get('statuses')),
     render('dashboard')
   ];
@@ -130,14 +130,19 @@ var setViewVar = function(key, value) {
   };
 };  
 
+
+/*
+ * load granted querystring
+ */
+
+var loadGranted = function(req, res, next) {
+  res.locals['granted'] = req.query.granted;
+  next();
+};
+
 /*
  * Load app providers
  */
-
-var loadProviders = function(req, res, next) {
-  res.locals.providers = req.app.get('providers');
-  next();
-};
 
 /*
  * Load specific project
