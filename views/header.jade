@@ -7,7 +7,10 @@ header
         .description 
           p.lead
             span A Hackaton Dashboard 
-            span#slogan for people
+            if(!user || user.is_social)
+              span#slogan for people
+            else
+              span#slogan for #{user.company}
       .span5
       .span4
         .createProject
@@ -19,4 +22,4 @@ header
             a.btn.btn-large.btn-cancel(href="/logout").tooltips(rel='tooltip', data-placement='bottom', data-original-title='Log out from Hackdash') Logout
           else
             a.btn.btn-large.btn-custom(href="/login") Log in to create a project
-            a.btn.btn-large.btn-custom(href='/prov') Create a company hack-dashboard
+            a.btn.btn-large.btn-custom(href='/prov', style="background-color: rgb(51, 151, 160)") Create a company hack-dashboard
